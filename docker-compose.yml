@@ -1,0 +1,32 @@
+
+version: "3.9"
+
+services:
+
+  backend:
+    build: ./backend
+    container_name: prishtina_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=sqlite:///./listings.db
+    depends_on:
+      - scraper
+
+  frontend:
+    build: ./frontend
+    container_name: prishtina_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+
+  scraper:
+    build: ./scraper
+    container_name: prishtina_scraper
+    volumes:
+      - ./scraper:/app
+    depends_on:
+      - backend
